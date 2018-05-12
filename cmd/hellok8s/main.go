@@ -4,11 +4,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello K8S, request path: %s\n", r.URL.Path)
+		name, err := os.Hostname()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Fprintf(w, "Hello K8S\n---------\nHost: %s\nRequest path: %s\n", name, r.URL.Path)
 	})
 
 	log.Println("listening on 8080")
