@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: oamd
+  labels:
+    app: oam-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oam-service
+    spec:
+      containers:
+      - name: oamd
+        image: tschokko/oamd:${TAG}
+        command:
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - name: oamd-config
+            mountPath: /etc/oamd/
+            readOnly: true
+      volumes:
+        - name: oamd-config
+          configMap: { name: oamd-config }
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: oamd-svc
+spec:
+  selector:
+    app: oamd
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: http

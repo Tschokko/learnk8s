@@ -21,12 +21,12 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: hellok8s
+  name: hellok8s-svc
 spec:
-  type: LoadBalancer
   selector:
     app: hellok8s
   ports:
   - protocol: TCP
-    port: 8081
+    port: 80
     targetPort: 8080
+    name: http

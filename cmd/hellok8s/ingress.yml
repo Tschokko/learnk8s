@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hellok8s-ingress
+spec:
+  rules:
+  - host: learnk8s.icomcloud.net
+    http:
+      paths: 
+      - path: /hello
+        backend:
+          serviceName: hellok8s-svc
+          servicePort: 80
