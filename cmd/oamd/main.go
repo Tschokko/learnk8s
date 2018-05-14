@@ -11,12 +11,12 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-const banner = `OAM Service\n
------------\n
-\n
-Account-ID:   %s\n
-Host:         %s\n
-Request path: %s\n`
+const banner = `OAM Service
+-----------
+
+Account-ID:   %s
+Host:         %s
+Request path: %s`
 
 // Config contains the setting of the OAM service daemon
 type Config struct {

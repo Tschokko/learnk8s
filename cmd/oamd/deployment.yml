@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: oam-service
+        app: oamd
     spec:
       containers:
       - name: oamd
