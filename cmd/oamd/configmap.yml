@@ -1,4 +1,4 @@
-ind: ConfigMap
+kind: ConfigMap
 apiVersion: v1
 metadata:
   name: oamd-config
@@ -6,3 +6,5 @@ data:
   config.yml: |-
     server:
       addr: ":8080"
+    oam:
+      accountID: cloud1234

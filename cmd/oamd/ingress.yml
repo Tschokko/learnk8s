@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: oamd-ingress
+spec:
+  rules:
+  - host: oam-cloud1234.eu-west-1.icomcloud.net
+    http:
+      paths: 
+      - path: /oamd
+        backend:
+          serviceName: oamd-svc
+          servicePort: 80

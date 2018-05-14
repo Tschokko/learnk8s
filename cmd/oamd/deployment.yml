@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: oamd
   labels:
-    app: oam-service
+    app: oamd
 spec:
   replicas: 1
   template:
