@@ -7,4 +7,5 @@ data:
     server:
       addr: ":8080"
     oam:
-      accountID: cloud1234
+      serviceID: cloud1234
+      controllerAddr: "oam-controller:7777"

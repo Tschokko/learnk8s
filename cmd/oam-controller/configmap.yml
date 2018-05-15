@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: oam-controller-config
+data:
+  config.yml: |-
+    server:
+      addr: ":7777"

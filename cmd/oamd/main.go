@@ -8,13 +8,17 @@ import (
 	"net/http"
 	"os"
 
+	controller "github.com/tschokko/learnk8s/pkg/controller/api"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 	yaml "gopkg.in/yaml.v2"
 )
 
 const banner = `OAM Service
 -----------
 
-Account-ID:   %s
+Service-ID:   %s
+Registered:   %t
 Host:         %s
 Request path: %s`
 
@@ -24,13 +28,14 @@ type Config struct {
 		Addr string `yaml:"addr"`
 	} `yaml:"server"`
 	OAM struct {
-		AccountID string `yaml:"accountID"`
+		ServiceID      string `yaml:"serviceID"`
+		ControllerAddr string `yaml:"controllerAddr"`
 	} `yaml:"oam"`
 }
 
 func load(file string) (cfg Config, err error) {
 	cfg.Server.Addr = ":8080"
-	cfg.OAM.AccountID = "unassigned"
+	cfg.OAM.ServiceID = "unassigned"
 
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -53,13 +58,30 @@ func main() {
 		log.Fatalf("failed to load configuration: %v", err)
 	}
 
+	// Connect to oam-controller and register the service
+	var registered = false
+
+	conn, err := grpc.Dial(config.OAM.ControllerAddr, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+
+	c := controller.NewServiceControllerClient(conn)
+	res, err := c.RegisterService(context.Background(), &controller.RegisterServiceRequest{ServiceID: config.OAM.ServiceID})
+	if err != nil {
+		log.Fatalf("error when calling RegisterService: %s", err)
+	}
+	registered = res.Success
+	// End of service registration
+
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		account := config.OAM.AccountID
+		serviceID := config.OAM.ServiceID
 		name, err := os.Hostname()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Fprintf(w, banner, account, name, r.URL.Path)
+		fmt.Fprintf(w, banner, serviceID, registered, name, r.URL.Path)
 	})
 
 	srv := &http.Server{

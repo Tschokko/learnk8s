@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.insys.icom.oam.servicecontroller";
+option java_outer_classname = "ServiceControllerProto";
+
+package api;
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+service ServiceController {
+    rpc RegisterService(RegisterServiceRequest) returns (RegisterServiceResponse) {} 
+}
+
+message RegisterServiceRequest {
+    string service_id = 1 [(gogoproto.customname) = "ServiceID"];
+}
+
+message RegisterServiceResponse {
+    bool success = 1;
+}

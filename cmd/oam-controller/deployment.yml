@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: oam-controller
+  labels:
+    app: oam-controller
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oam-controller
+    spec:
+      containers:
+      - name: oam-controller
+        image: tschokko/oam-controller:${TAG}
+        command:
+        ports:
+          - containerPort: 7777
+        volumeMounts:
+          - name: oam-controller-config
+            mountPath: /etc/oam-controller/
+            readOnly: true
+      volumes:
+        - name: oam-controller-config
+          configMap: { name: oamd-controller-config }
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: oam-controller-svc
+spec:
+  selector:
+    app: oam-controller
+  ports:
+  - protocol: TCP
+    port: 7777
+    targetPort: 7777
+    name: grpc

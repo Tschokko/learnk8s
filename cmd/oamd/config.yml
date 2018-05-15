@@ -1,4 +1,5 @@
 server:
   addr: ":8080"
 oam:
-  accountID: test1234
+  serviceID: test1234
+  controllerAddr: "localhost:7777"
