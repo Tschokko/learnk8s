@@ -74,7 +74,7 @@ func main() {
 	}
 	opts = append(opts, grpc.WithTransportCredentials(creds))
 
-	conn, err := grpc.Dial(config.OAM.ControllerAddr, opts...)
+	conn, err := grpc.Dial(config.OAM.ControllerAddr, grpc.WithInsecure()) // opts...
 
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)

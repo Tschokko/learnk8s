@@ -17,6 +17,7 @@ spec:
         command:
         ports:
           - containerPort: 7777
+            name: grpc
         volumeMounts:
           - name: oam-controller-config
             mountPath: /etc/oam-controller/
@@ -44,7 +45,6 @@ spec:
   selector:
     app: oam-controller
   ports:
-  - protocol: TCP
-    port: 7777
+  - port: 7777
     targetPort: 7777
     name: grpc
