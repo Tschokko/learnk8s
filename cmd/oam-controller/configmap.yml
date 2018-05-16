@@ -6,5 +6,5 @@ data:
   config.yml: |-
     server:
       addr: ":7777"
-      sslCertFile: "/etc/oam-controller/ssl/oam-controller-nsys.crt" 
-      sslKeyFile: "/etc/oam-controller/ssl/private/oam-controller-nsys.key"
+      sslCertFile: "/etc/oam-controller/ssl/oam-controller-svc.crt" 
+      sslKeyFile: "/etc/oam-controller/ssl/private/oam-controller-svc.key"
