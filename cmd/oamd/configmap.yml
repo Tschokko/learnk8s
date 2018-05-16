@@ -8,4 +8,6 @@ data:
       addr: ":8080"
     oam:
       serviceID: cloud1234
-      controllerAddr: "oam-controller:7777"
+      controllerAddr: "oam-controller-svc:7777"
+      controllerSslCaFile: "/etc/oamd/ssl/icomcloud-pki/icomcloud-ca.crt"
+      controllerServerHostOverride: "oam-controller-nsys.eu-west-1.icomcloud.net"

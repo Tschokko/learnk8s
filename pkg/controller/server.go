@@ -21,8 +21,8 @@ func (s *ServiceControllerServer) RegisterService(ctx context.Context, in *api.R
 	return &api.RegisterServiceResponse{Success: true}, nil
 }
 
-func (s *ServiceControllerServer) Run(l net.Listener) error {
-	grpcServer := grpc.NewServer()
+func (s *ServiceControllerServer) Run(l net.Listener, opt ...grpc.ServerOption) error {
+	grpcServer := grpc.NewServer(opt...)
 	api.RegisterServiceControllerServer(grpcServer, s)
 	return grpcServer.Serve(l)
 }

@@ -21,9 +21,14 @@ spec:
           - name: oamd-config
             mountPath: /etc/oamd/
             readOnly: true
+          - name: icomcloud-pki
+            mountPath: /etc/oamd/ssl/icomcloud-pki
       volumes:
         - name: oamd-config
           configMap: { name: oamd-config }
+        - name: icomcloud-pki
+          secret:
+            secretName: icomcloud-pki
 ---
 kind: Service
 apiVersion: v1

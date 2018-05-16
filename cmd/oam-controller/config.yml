@@ -1,2 +1,4 @@
 server:
   addr: ":7777"
+  sslCertFile: "./oam-controller-nsys.crt" 
+  sslKeyFile: "./oam-controller-nsys.key"

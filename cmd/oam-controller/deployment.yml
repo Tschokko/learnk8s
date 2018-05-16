@@ -21,9 +21,20 @@ spec:
           - name: oam-controller-config
             mountPath: /etc/oam-controller/
             readOnly: true
+          - name: oam-controller-nsys-key
+            mountPath: /etc/oam-controller/ssl/private
+          - name: oam-controller-nsys-crt
+            mountPath: /etc/oam-controller/ssl
       volumes:
         - name: oam-controller-config
-          configMap: { name: oamd-controller-config }
+          configMap: { name: oam-controller-config }
+        - name: oam-controller-nsys-key
+          secret:
+            secretName: oam-controller-nsys-key
+            defaultMode: 0600
+        - name: oam-controller-nsys-crt
+          secret:
+            secretName: oam-controller-nsys-crt
 ---
 kind: Service
 apiVersion: v1

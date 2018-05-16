@@ -11,6 +11,7 @@ import (
 	controller "github.com/tschokko/learnk8s/pkg/controller/api"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -28,8 +29,10 @@ type Config struct {
 		Addr string `yaml:"addr"`
 	} `yaml:"server"`
 	OAM struct {
-		ServiceID      string `yaml:"serviceID"`
-		ControllerAddr string `yaml:"controllerAddr"`
+		ServiceID                    string `yaml:"serviceID"`
+		ControllerAddr               string `yaml:"controllerAddr"`
+		ControllerSSLCaFile          string `yaml:"controllerSslCaFile"`
+		ControllerServerHostOverride string `yaml:"controllerServerHostOverride"`
 	} `yaml:"oam"`
 }
 
@@ -61,7 +64,18 @@ func main() {
 	// Connect to oam-controller and register the service
 	var registered = false
 
-	conn, err := grpc.Dial(config.OAM.ControllerAddr, grpc.WithInsecure())
+	// SSL
+	var opts []grpc.DialOption
+	// caFile := "icomcloud-ca.crt"
+	// serverHostOverride := "oam-controller-nsys.eu-west-1.icomcloud.net"
+	creds, err := credentials.NewClientTLSFromFile(config.OAM.ControllerSSLCaFile, config.OAM.ControllerServerHostOverride)
+	if err != nil {
+		log.Fatalf("Failed to create TLS credentials %v", err)
+	}
+	opts = append(opts, grpc.WithTransportCredentials(creds))
+
+	conn, err := grpc.Dial(config.OAM.ControllerAddr, opts...)
+
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
