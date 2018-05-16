@@ -9,6 +9,7 @@ data:
     oam:
       serviceID: cloud1234
       controllerAddr: "oam-controller-svc:7777"
-      controllerSslCaFile: "/etc/oamd/ssl/icomcloud-pki/icomcloud-ca.crt"
+      # controllerSslCaFile: "/etc/oamd/ssl/icomcloud-pki/icomcloud-ca.crt"
       # controllerServerHostOverride: "oam-controller-nsys.eu-west-1.icomcloud.net"
-      controllerServerHostOverride: ""
+      # controllerServerHostOverride: ""
+      controllerUseTLS: false

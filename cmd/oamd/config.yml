@@ -2,6 +2,7 @@ server:
   addr: ":8080"
 oam:
   serviceID: test1234
+  controllerUseTLS: true
   controllerAddr: "oam-controller-nsys.eu-west-1.icomcloud.net:443"
   #controllerAddr: "localhost:7777"
   controllerSslCaFile: "./icomcloud-ca.crt"

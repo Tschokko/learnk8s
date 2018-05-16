@@ -8,7 +8,6 @@ import (
 
 	"github.com/tschokko/learnk8s/pkg/controller"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -55,11 +54,11 @@ func main() {
 
 	// certFile := "./oam-controller-nsys.crt"
 	//keyFile := "./oam-controller-nsys.key"
-	creds, err := credentials.NewServerTLSFromFile(config.Server.SSLCertFile, config.Server.SSLKeyFile)
+	/*creds, err := credentials.NewServerTLSFromFile(config.Server.SSLCertFile, config.Server.SSLKeyFile)
 	if err != nil {
 		log.Fatalf("Failed to generate credentials %v", err)
 	}
-	opts = []grpc.ServerOption{grpc.Creds(creds)}
+	opts = []grpc.ServerOption{grpc.Creds(creds)}*/
 
 	s, _ := controller.NewServer()
 	log.Println("start listening on port 7777")

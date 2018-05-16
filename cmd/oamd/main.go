@@ -33,6 +33,7 @@ type Config struct {
 		ControllerAddr               string `yaml:"controllerAddr"`
 		ControllerSSLCaFile          string `yaml:"controllerSslCaFile"`
 		ControllerServerHostOverride string `yaml:"controllerServerHostOverride"`
+		ControllerUseTLS             bool   `yaml:"controllerUseTLS"`
 	} `yaml:"oam"`
 }
 
@@ -66,15 +67,17 @@ func main() {
 
 	// SSL
 	var opts []grpc.DialOption
-	// caFile := "icomcloud-ca.crt"
-	// serverHostOverride := "oam-controller-nsys.eu-west-1.icomcloud.net"
-	creds, err := credentials.NewClientTLSFromFile(config.OAM.ControllerSSLCaFile, config.OAM.ControllerServerHostOverride)
-	if err != nil {
-		log.Fatalf("Failed to create TLS credentials %v", err)
+	if config.OAM.ControllerUseTLS {
+		creds, err := credentials.NewClientTLSFromFile(config.OAM.ControllerSSLCaFile, config.OAM.ControllerServerHostOverride)
+		if err != nil {
+			log.Fatalf("Failed to create TLS credentials %v", err)
+		}
+		opts = append(opts, grpc.WithTransportCredentials(creds))
+	} else {
+		opts = append(opts, grpc.WithInsecure())
 	}
-	opts = append(opts, grpc.WithTransportCredentials(creds))
 
-	conn, err := grpc.Dial(config.OAM.ControllerAddr, grpc.WithInsecure()) // opts...
+	conn, err := grpc.Dial(config.OAM.ControllerAddr, opts...) // opts...
 
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
